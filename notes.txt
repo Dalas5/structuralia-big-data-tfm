@@ -1,0 +1,37 @@
+1. Installation steps: https://itslinuxfoss.com/install-minio-ubuntu-22-04/
+2. Start minIO server: sudo ./minio server /minio
+3. Create user "dalas" with password "devdeav5"
+4. Set alias: ./mc alias set myminio_dalas http://192.168.0.13:9000 dalas devdeav5
+5. create bucket: ./mc mb myminio_dalas/hudi
+6. Checking my spark version
+
+      ____              __
+     / __/__  ___ _____/ /__
+    _\ \/ _ \/ _ `/ __/  '_/
+   /___/ .__/\_,_/_/ /_/\_\   version 3.3.0
+      /_/
+         
+Using Scala version 2.12.15 (OpenJDK 64-Bit Server VM, Java 11.0.17)
+
+
+7. Downloading proper spark-hudi jar: wget  -P $SPARK_HOME/jars/ "https://repo1.maven.org/maven2/org/apache/hudi/hudi-spark3-bundle_2.12/0.12.2/hudi-spark3-bundle_2.12-0.12.2.jar"
+
+8. Downloading proper aws java sdk bundle: wget -P $SPARK_HOME/jars/ "https://repo1.maven.org/maven2/com/amazonaws/aws-java-sdk-bundle/1.12.398/aws-java-sdk-bundle-1.12.398.jar"
+
+9. Downloading proper hadoop aws jar: wget -P $SPARK_HOME/jars/ "https://repo1.maven.org/maven2/org/apache/hadoop/hadoop-aws/3.3.4/hadoop-aws-3.3.4.jar"
+
+
+10. Starting spark session with MinIO for storage
+
+$SPARK_HOME/bin/spark-shell \
+--jars 'hudi-spark3-bundle_2.12-0.12.2.jar,hadoop-aws-3.3.4.jar,aws-java-sdk-bundle-1.12.398.jar' \
+--conf 'spark.serializer=org.apache.spark.serializer.KryoSerializer' \
+--conf 'spark.sql.catalog.spark_catalog=org.apache.spark.sql.hudi.catalog.HoodieCatalog' \
+--conf 'spark.sql.extensions=org.apache.spark.sql.hudi.HoodieSparkSessionExtension' \
+--conf 'spark.hadoop.fs.s3a.access.key=dalas' \
+--conf 'spark.hadoop.fs.s3a.secret.key=devdeav5' \
+--conf 'spark.hadoop.fs.s3a.endpoint=http://192.168.0.13:9000' \
+--conf 'spark.hadoop.fs.s3a.path.style.access=true' \
+--conf 'spark.hadoop.fs.s3a.signing-algorithm=S3SignerType'
+
+
