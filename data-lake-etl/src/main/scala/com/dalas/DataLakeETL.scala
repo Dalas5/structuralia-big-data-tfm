@@ -24,6 +24,9 @@ object DataLakeETL {
 
   def main(args: Array[String]): Unit = {
 
+    // Start time
+    val t1 = System.nanoTime()
+
     if (args.length > 5) {
       println("Need input path, output path, start date and end date")
       System.exit(1)
@@ -113,5 +116,9 @@ object DataLakeETL {
       .save(outputPath + File.separator + tableName)
 
     spark.stop()
+
+    // Printing runtime duration in minutes
+    val duration = (System.nanoTime - t1) / 1e9d
+    println(s"Run time: $duration")
   }
 }
