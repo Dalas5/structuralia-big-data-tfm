@@ -35,3 +35,297 @@ $SPARK_HOME/bin/spark-shell \
 --conf 'spark.hadoop.fs.s3a.signing-algorithm=S3SignerType'
 
 
+
+- Building Fat JAR: $sbt assembly  , on sbt project root folder
+
+- spark-cluster location: /home/dalas/Documents/BigDataTrainee/RockTheJVM/spark-optimization/spark-cluster
+
+- Copying fat jar file to cluster mount 
+cp /home/dalas/Documents/master-tfm/data-lake-etl/target/scala-2.12/data-lake-etl-assembly-0.1.0-SNAPSHOT.jar /home/dalas/Documents/BigDataTrainee/RockTheJVM/spark-optimization/spark-cluster/apps/data-lake-etl.jar
+
+
+* Starting up cluster (cd to spark-cluster folder) : docker compose up --scale spark-worker=3
+* logging to cluster-master: 			     docker exec -it spark-cluster-spark-master-1 bash
+
+* executing spark-submit command for VALIDATION
+
+* Spark cluster
+$SPARK_HOME/bin/spark-submit --class com.dalas.DataLakeValidation --deploy-mode client --master spark://fc5dd8d02cc:7077 --verbose --supervise /opt/spark-apps/data-lake-etl.jar '/home/dalas/Downloads/archive' 's3a://amazon-data' 'amazon_reviews' '1998-07-15' '1999-12-31'
+
+* Locally
+1.
+
+$SPARK_HOME/bin/spark-submit \
+--class com.dalas.DataLakeValidation \
+--master local[*] \
+/home/dalas/Documents/master-tfm/data-lake-etl/target/scala-2.12/data-lake-etl-assembly-0.1.0-SNAPSHOT.jar \
+'/home/dalas/Downloads/archive' \
+'s3a://amazon-data' \
+'amazon_reviews' \
+'1998-07-15' \
+'1999-12-31'
+
+2.
+
+$SPARK_HOME/bin/spark-submit \
+--class com.dalas.DataLakeValidation \
+--master local[*] \
+/home/dalas/Documents/master-tfm/data-lake-etl/target/scala-2.12/data-lake-etl-assembly-0.1.0-SNAPSHOT.jar \
+'/home/dalas/Downloads/archive' \
+'s3a://amazon-data' \
+'amazon_reviews' \
+'2000-01-01' \
+'2002-12-31'
+
+
+3.
+
+$SPARK_HOME/bin/spark-submit \
+--class com.dalas.DataLakeValidation \
+--master local[*] \
+/home/dalas/Documents/master-tfm/data-lake-etl/target/scala-2.12/data-lake-etl-assembly-0.1.0-SNAPSHOT.jar \
+'/home/dalas/Downloads/archive' \
+'s3a://amazon-data' \
+'amazon_reviews' \
+'2003-01-01' \
+'2005-12-31'
+
+
+
+4.
+
+$SPARK_HOME/bin/spark-submit \
+--class com.dalas.DataLakeValidation \
+--master local[*] \
+/home/dalas/Documents/master-tfm/data-lake-etl/target/scala-2.12/data-lake-etl-assembly-0.1.0-SNAPSHOT.jar \
+'/home/dalas/Downloads/archive' \
+'s3a://amazon-data' \
+'amazon_reviews' \
+'2006-01-01' \
+'2008-12-31'
+
+5.
+
+$SPARK_HOME/bin/spark-submit \
+--class com.dalas.DataLakeValidation \
+--master local[*] \
+/home/dalas/Documents/master-tfm/data-lake-etl/target/scala-2.12/data-lake-etl-assembly-0.1.0-SNAPSHOT.jar \
+'/home/dalas/Downloads/archive' \
+'s3a://amazon-data' \
+'amazon_reviews' \
+'2009-01-01' \
+'2011-12-31'
+
+
+6.
+
+$SPARK_HOME/bin/spark-submit \
+--driver-memory=10G \
+--executor-memory=18G \
+--class com.dalas.DataLakeValidation \
+--master local[*] \
+/home/dalas/Documents/master-tfm/data-lake-etl/target/scala-2.12/data-lake-etl-assembly-0.1.0-SNAPSHOT.jar \
+'/home/dalas/Downloads/archive' \
+'s3a://amazon-data' \
+'amazon_reviews' \
+'1998-07-15' \
+'2015-12-31'
+
+
+
+
+* executing spark-submit command for HISTORY LOAD
+
+1.
+
+$SPARK_HOME/bin/spark-submit \
+--class com.dalas.DataLakeETL \
+--master local[*] \
+/home/dalas/Documents/master-tfm/data-lake-etl/target/scala-2.12/data-lake-etl-assembly-0.1.0-SNAPSHOT.jar \
+'/home/dalas/Downloads/archive' \
+'s3a://amazon-data' \
+'amazon_reviews' \
+'1998-07-15' \
+'1999-12-31'
+
+
+2.
+
+$SPARK_HOME/bin/spark-submit \
+--class com.dalas.DataLakeETL \
+--master local[*] \
+/home/dalas/Documents/master-tfm/data-lake-etl/target/scala-2.12/data-lake-etl-assembly-0.1.0-SNAPSHOT.jar \
+'/home/dalas/Downloads/archive' \
+'s3a://amazon-data' \
+'amazon_reviews' \
+'2000-01-01' \
+'2002-12-31'
+
+3.
+
+$SPARK_HOME/bin/spark-submit \
+--class com.dalas.DataLakeETL \
+--master local[*] \
+/home/dalas/Documents/master-tfm/data-lake-etl/target/scala-2.12/data-lake-etl-assembly-0.1.0-SNAPSHOT.jar \
+'/home/dalas/Downloads/archive' \
+'s3a://amazon-data' \
+'amazon_reviews' \
+'2003-01-01' \
+'2005-12-31'
+
+
+4.
+
+$SPARK_HOME/bin/spark-submit \
+--class com.dalas.DataLakeETL \
+--master local[*] \
+/home/dalas/Documents/master-tfm/data-lake-etl/target/scala-2.12/data-lake-etl-assembly-0.1.0-SNAPSHOT.jar \
+'/home/dalas/Downloads/archive' \
+'s3a://amazon-data' \
+'amazon_reviews' \
+'2006-01-01' \
+'2006-12-31'
+
+
+
+$SPARK_HOME/bin/spark-submit \
+--class com.dalas.DataLakeETL \
+--master local[*] \
+/home/dalas/Documents/master-tfm/data-lake-etl/target/scala-2.12/data-lake-etl-assembly-0.1.0-SNAPSHOT.jar \
+'/home/dalas/Downloads/archive' \
+'s3a://amazon-data' \
+'amazon_reviews' \
+'2007-01-01' \
+'2007-12-31'
+
+
+$SPARK_HOME/bin/spark-submit \
+--class com.dalas.DataLakeETL \
+--master local[*] \
+/home/dalas/Documents/master-tfm/data-lake-etl/target/scala-2.12/data-lake-etl-assembly-0.1.0-SNAPSHOT.jar \
+'/home/dalas/Downloads/archive' \
+'s3a://amazon-data' \
+'amazon_reviews' \
+'2008-01-01' \
+'2008-12-31'
+
+
+
+
+
+5.
+
+$SPARK_HOME/bin/spark-submit \
+--class com.dalas.DataLakeETL \
+--master local[*] \
+/home/dalas/Documents/master-tfm/data-lake-etl/target/scala-2.12/data-lake-etl-assembly-0.1.0-SNAPSHOT.jar \
+'/home/dalas/Downloads/archive' \
+'s3a://amazon-data' \
+'amazon_reviews' \
+'2009-01-01' \
+'2011-12-31'
+
+
+$SPARK_HOME/bin/spark-submit \
+--driver-memory=4G \
+--executor-memory=16G \
+--class com.dalas.DataLakeETL \
+--master local[*] \
+/home/dalas/Documents/master-tfm/data-lake-etl/target/scala-2.12/data-lake-etl-assembly-0.1.0-SNAPSHOT.jar \
+'/home/dalas/Downloads/archive' \
+'s3a://amazon-data' \
+'amazon_reviews' \
+'2009-01-01' \
+'2009-12-31'
+
+
+
+
+$SPARK_HOME/bin/spark-submit \
+--driver-memory=4G \
+--executor-memory=16G \
+--class com.dalas.DataLakeETL \
+--master local[*] \
+/home/dalas/Documents/master-tfm/data-lake-etl/target/scala-2.12/data-lake-etl-assembly-0.1.0-SNAPSHOT.jar \
+'/home/dalas/Downloads/archive' \
+'s3a://amazon-data' \
+'amazon_reviews' \
+'2010-01-01' \
+'2011-12-31'
+
+
+
+
+
+
+
+6.
+
+$SPARK_HOME/bin/spark-submit \
+--driver-memory=4G \
+--executor-memory=16G \
+--class com.dalas.DataLakeETL \
+--master local[*] \
+/home/dalas/Documents/master-tfm/data-lake-etl/target/scala-2.12/data-lake-etl-assembly-0.1.0-SNAPSHOT.jar \
+'/home/dalas/Downloads/archive' \
+'s3a://amazon-data' \
+'amazon_reviews' \
+'2012-01-01' \
+'2015-12-31'
+
+
+
+$SPARK_HOME/bin/spark-submit \
+--driver-memory=4G \
+--executor-memory=16G \
+--class com.dalas.DataLakeETL \
+--master local[*] \
+/home/dalas/Documents/master-tfm/data-lake-etl/target/scala-2.12/data-lake-etl-assembly-0.1.0-SNAPSHOT.jar \
+'/home/dalas/Downloads/archive' \
+'s3a://amazon-data' \
+'amazon_reviews' \
+'2012-01-01' \
+'2012-12-31'
+
+
+$SPARK_HOME/bin/spark-submit \
+--driver-memory=10G \
+--executor-memory=18G \
+--class com.dalas.DataLakeETL \
+--master local[*] \
+/home/dalas/Documents/master-tfm/data-lake-etl/target/scala-2.12/data-lake-etl-assembly-0.1.0-SNAPSHOT.jar \
+'/home/dalas/Downloads/archive' \
+'s3a://amazon-data' \
+'amazon_reviews' \
+'2013-01-01' \
+'2013-12-31'
+
+
+$SPARK_HOME/bin/spark-submit \
+--driver-memory=10G \
+--executor-memory=18G \
+--class com.dalas.DataLakeETL \
+--master local[*] \
+/home/dalas/Documents/master-tfm/data-lake-etl/target/scala-2.12/data-lake-etl-assembly-0.1.0-SNAPSHOT.jar \
+'/home/dalas/Downloads/archive' \
+'s3a://amazon-data' \
+'amazon_reviews' \
+'2014-01-01' \
+'2014-12-31'
+
+
+
+$SPARK_HOME/bin/spark-submit \
+--driver-memory=10G \
+--executor-memory=18G \
+--class com.dalas.DataLakeETL \
+--master local[*] \
+/home/dalas/Documents/master-tfm/data-lake-etl/target/scala-2.12/data-lake-etl-assembly-0.1.0-SNAPSHOT.jar \
+'/home/dalas/Downloads/archive' \
+'s3a://amazon-data' \
+'amazon_reviews' \
+'2015-01-01' \
+'2015-12-31'
+
+
+
