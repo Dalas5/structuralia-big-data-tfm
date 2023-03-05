@@ -28,7 +28,7 @@ object DataLakeValidation {
     val t1 = System.nanoTime()
 
     if (args.length > 5) {
-      println("Need input path, output path, start date and end date")
+      println("Need input path, table name, output path, start date and end date")
       System.exit(1)
     }
 
