@@ -61,7 +61,6 @@ object DataLakeValidation {
       .config("spark.hadoop.fs.s3a.endpoint", "http://192.168.0.14:9000")
       .config("spark.hadoop.fs.s3a.path.style.access", "true")
       .config("spark.hadoop.fs.s3a.signing-algorithm", "S3SignerType")
-      .master("local[*]")
       .getOrCreate()
 
     // Set the log level to only print errors

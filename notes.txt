@@ -329,3 +329,122 @@ $SPARK_HOME/bin/spark-submit \
 
 
 
+
+
+/* EDA command  */
+
+$SPARK_HOME/bin/spark-submit \
+--driver-memory=10G \
+--executor-memory=18G \
+--class com.dalas.AmazonEDA \
+--master local[*] \
+/home/dalas/Documents/master-tfm/data-lake-etl/target/scala-2.12/data-lake-etl-assembly-0.1.0-SNAPSHOT.jar \
+'s3a://amazon-data' \
+'s3a://amazon-eda' \
+'amazon_reviews' \
+'1998-07-15' \
+'2015-12-31'
+
+
+
+
+data-lake-etl properties
+- sbt.version = 1.8.2
+- scalaVersion := "2.12.15"
+- 
+
+/* Amazon NLP command */
+
+$SPARK_HOME/bin/spark-submit \
+--driver-memory=8G \
+--executor-memory=16G \
+--class com.dalas.AmazonNLP \
+--master local[*] \
+/home/dalas/Documents/master-tfm/amazon-nlp/target/scala-2.12/amazon-nlp-assembly-0.1.0-SNAPSHOT.jar \
+'s3a://amazon-data' \
+'s3a://amazon-ml/amazon-nlp' \
+'amazon_reviews' \
+'2010-01-01' \
+'2015-12-31'
+
+
+
+/* Amazon NLP Simple Test */
+
+
+$SPARK_HOME/bin/spark-submit \
+--driver-memory=6G \
+--executor-memory=10G \
+--class com.dalas.AmazonNLPSimpleTest \
+--master local[*] \
+/home/dalas/Documents/master-tfm/amazon-nlp/target/scala-2.12/amazon-nlp-assembly-0.1.0-SNAPSHOT.jar \
+'s3a://amazon-ml/amazon-nlp' \
+'nlp-model.3.12' \
+'nlp_pipeline.3.12'
+
+
+Using Spark's default log4j profile: org/apache/spark/log4j2-defaults.properties
+23/03/08 00:46:27 WARN Utils: Your hostname, pop-os resolves to a loopback address: 127.0.1.1; using 192.168.0.14 instead (on interface wlp0s20f3)
+23/03/08 00:46:27 WARN Utils: Set SPARK_LOCAL_IP if you need to bind to another address
+23/03/08 00:46:27 INFO SparkContext: Running Spark version 3.3.0
+23/03/08 00:46:27 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+23/03/08 00:46:27 INFO ResourceUtils: ==============================================================
+23/03/08 00:46:27 INFO ResourceUtils: No custom resources configured for spark.driver.
+23/03/08 00:46:27 INFO ResourceUtils: ==============================================================
+23/03/08 00:46:27 INFO SparkContext: Submitted application: Amazon NLP Model Simple Test
+23/03/08 00:46:27 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(cores -> name: cores, amount: 1, script: , vendor: , memory -> name: memory, amount: 1024, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+23/03/08 00:46:27 INFO ResourceProfile: Limiting resource is cpu
+23/03/08 00:46:27 INFO ResourceProfileManager: Added ResourceProfile id: 0
+23/03/08 00:46:27 INFO SecurityManager: Changing view acls to: dalas
+23/03/08 00:46:27 INFO SecurityManager: Changing modify acls to: dalas
+23/03/08 00:46:27 INFO SecurityManager: Changing view acls groups to: 
+23/03/08 00:46:27 INFO SecurityManager: Changing modify acls groups to: 
+23/03/08 00:46:27 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users  with view permissions: Set(dalas); groups with view permissions: Set(); users  with modify permissions: Set(dalas); groups with modify permissions: Set()
+23/03/08 00:46:27 INFO Utils: Successfully started service 'sparkDriver' on port 39935.
+23/03/08 00:46:27 INFO SparkEnv: Registering MapOutputTracker
+WARNING: An illegal reflective access operation has occurred
+WARNING: Illegal reflective access by org.apache.spark.unsafe.Platform (file:/home/dalas/.cache/coursier/v1/https/repo1.maven.org/maven2/org/apache/spark/spark-unsafe_2.12/3.3.0/spark-unsafe_2.12-3.3.0.jar) to constructor java.nio.DirectByteBuffer(long,int)
+WARNING: Please consider reporting this to the maintainers of org.apache.spark.unsafe.Platform
+WARNING: Use --illegal-access=warn to enable warnings of further illegal reflective access operations
+WARNING: All illegal access operations will be denied in a future release
+23/03/08 00:46:27 INFO SparkEnv: Registering BlockManagerMaster
+23/03/08 00:46:27 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+23/03/08 00:46:27 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+23/03/08 00:46:27 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+23/03/08 00:46:27 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-a6aa0dfa-c3ed-4af0-bb27-4ba9893c67b0
+23/03/08 00:46:27 INFO MemoryStore: MemoryStore started with capacity 4.5 GiB
+23/03/08 00:46:27 INFO SparkEnv: Registering OutputCommitCoordinator
+23/03/08 00:46:27 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+23/03/08 00:46:27 INFO Executor: Starting executor ID driver on host 192.168.0.14
+23/03/08 00:46:27 INFO Executor: Starting executor with user classpath (userClassPathFirst = false): ''
+23/03/08 00:46:27 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 43891.
+23/03/08 00:46:27 INFO NettyBlockTransferService: Server created on 192.168.0.14:43891
+23/03/08 00:46:27 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+23/03/08 00:46:27 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, 192.168.0.14, 43891, None)
+23/03/08 00:46:27 INFO BlockManagerMasterEndpoint: Registering block manager 192.168.0.14:43891 with 4.5 GiB RAM, BlockManagerId(driver, 192.168.0.14, 43891, None)
+23/03/08 00:46:27 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, 192.168.0.14, 43891, None)
+23/03/08 00:46:27 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, 192.168.0.14, 43891, None)
++--------------------------------------------------------+----------+
+|review_body                                             |prediction|
++--------------------------------------------------------+----------+
+|I'm totally disappointed, It broke the next day I used  |0.0       |
+|I loved this product, it's great quality                |2.0       |
+|It is ok for the price, but I don't recommend it        |2.0       |
+|I hoped for more, but is acceptable quality, three stars|2.0       |
++--------------------------------------------------------+----------+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
