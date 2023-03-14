@@ -1,3 +1,13 @@
+Dataset
+
+Dataset rows : 15,596,924
+Dataset columns: : 15
+Dataset size : 8.2 GB 
+
+
+
+Data Lake
+
 1. Installation steps: https://itslinuxfoss.com/install-minio-ubuntu-22-04/
 2. Start minIO server: sudo ./minio server /minio
 3. Create user "dalas" with password "devdeav5"
@@ -432,6 +442,16 @@ WARNING: All illegal access operations will be denied in a future release
 |It is ok for the price, but I don't recommend it        |2.0       |
 |I hoped for more, but is acceptable quality, three stars|2.0       |
 +--------------------------------------------------------+----------+
+
+
+
+
+
+/*****          Collaborative Filtering Recommender **************** /
+
+
+product_category = 'PC'
+
 
 
 
