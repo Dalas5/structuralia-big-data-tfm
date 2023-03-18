@@ -49,10 +49,8 @@ object DataLakeETL {
     println(s"Job parameters are: \ninputPath: $inputPath\noutputPath: $outputPath\ntableName: $tableName\n" +
       s"startdt: $startdt    enddt: $enddt")
 
-    // additional bucket names probably
-    // s3a://amazon-ml/nlp
-    // s3a://amazon-ml/cluster
 
+    // Building spark sesion with hudi and minio dependencies
     val spark = SparkSession.builder()
       .appName("Data Lake Ingestion ETL")
       .config("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
@@ -88,6 +86,7 @@ object DataLakeETL {
       .add("review_body", StringType, nullable = true)
       .add("review_date", DateType, nullable = true)
 
+    // Reading from source
     import spark.implicits._
     val amazonDF = spark.read
       .option("header", "true")
@@ -105,6 +104,7 @@ object DataLakeETL {
 
     val finalRatingAmazonDF = intRatingAmazonDF.withColumn("updated_ts", current_timestamp())
 
+    // Saving hudi table
     finalRatingAmazonDF.write.format("hudi")
       .option(RECORDKEY_FIELD.key(), "review_id")
       .option(PARTITIONPATH_FIELD.key(), "review_date")

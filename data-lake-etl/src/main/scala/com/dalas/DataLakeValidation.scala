@@ -87,6 +87,7 @@ object DataLakeValidation {
       .add("review_date", DateType, nullable = true)
 
 
+    // Reading from source
     import spark.implicits._
     val amazonDF = spark.read
       .option("header", "true")
@@ -95,6 +96,7 @@ object DataLakeValidation {
       .csv(inputPath)
       .as[Review]
 
+    // Dropping nulls in star_rating and review_id, casting to int, filtering by date range
     val intRatingAmazonDF = amazonDF
       .withColumn("int_star_rating",
         when(col("star_rating").isNotNull, udfInt(col("star_rating"))).otherwise(lit(null)))
@@ -103,6 +105,7 @@ object DataLakeValidation {
 
     intRatingAmazonDF.createOrReplaceTempView("amazon_reviews")
 
+    // Calculating validation metrics
     spark.sql(
       """select
         |count(*) as orig_row_count,
@@ -111,9 +114,10 @@ object DataLakeValidation {
         |sum(total_votes) as orig_total_votes
         |from amazon_reviews""".stripMargin).show()
 
-    intRatingAmazonDF.show(5, 20, vertical = false)
+    intRatingAmazonDF.show(5, 20, vertical = true)
 
 
+    // Reading hudi table
     val preAmazonHudiDF = spark.
     read.
     format("hudi").
@@ -121,6 +125,7 @@ object DataLakeValidation {
 
     val amazonHudiDF = preAmazonHudiDF.where(col("review_date").between(startdt,enddt))
 
+    // Calculating validation metrics
     amazonHudiDF.createOrReplaceTempView("hudi_amazon_reviews")
     spark.sql(
       """select
@@ -130,7 +135,7 @@ object DataLakeValidation {
         |sum(total_votes) as hudi_total_votes
         |from hudi_amazon_reviews""".stripMargin).show()
 
-    amazonHudiDF.show(5, 20, vertical = false)
+    amazonHudiDF.show(5, 20, vertical = true)
 
 
     spark.stop()
